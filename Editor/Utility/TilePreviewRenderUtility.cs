@@ -39,28 +39,29 @@ namespace TilemapCreator3D.EditorOnly {
         
         // Summary
         //      Create previews for a whole palette. Only the first variation will get a preview
-        public Texture2D[] GetStaticPreviews(TilePalette palette, int width, int height) {
-            if(palette.Count == 0) return new Texture2D[0];
+        public Texture2D[] GetStaticPreviews(TilePalette palette, int width, int height)
+        {
+            if (palette.Count == 0) return new Texture2D[0];
 
             Texture2D[] outputs = new Texture2D[palette.Count];
             Rect rect = new Rect(0, 0, width, height);
 
             RenderTexture.active = _renderUtility.camera.targetTexture;
 
-            // We don't use BeginStaticPreview due to it's limitation when it comes to transparent backgrounds
-            _renderUtility.BeginPreview(new Rect(rect.x, rect.y, rect.width * 0.5f, rect.height * 0.5f), new GUIStyle());
+            _renderUtility.BeginPreview(rect, new GUIStyle());
 
-            for(int i = 0; i < outputs.Length; i++) {
+            for (int i = 0; i < outputs.Length; i++)
+            {
                 BaseTile bTile = palette[i];
 
-                if(bTile == null) continue;
+                if (bTile == null) continue;
 
-                if(DrawMeshPreview(bTile.GetTilePreview(0), bTile.Material, bTile.PreviewRotation)) {
-                    // Copy active rendertexture
+                if (DrawMeshPreview(bTile.GetTilePreview(0), bTile.Material, bTile.PreviewRotation))
+                {
                     outputs[i] = new Texture2D(width, height, TextureFormat.ARGB32, false);
                     outputs[i].ReadPixels(rect, 0, 0);
                     outputs[i].Apply();
-                }  
+                }
             }
 
             _renderUtility.EndPreview();
@@ -70,25 +71,24 @@ namespace TilemapCreator3D.EditorOnly {
             return outputs;
         }
 
-
         // Summary
         //      Create a preview for a tile
-        public Texture2D GetStaticPreview(BaseTile tile, int variation, int width, int height) {
-            if(tile == null) return null;
+        public Texture2D GetStaticPreview(BaseTile tile, int variation, int width, int height)
+        {
+            if (tile == null) return null;
 
             Texture2D output = new Texture2D(width, height, TextureFormat.ARGB32, false);
             Rect rect = new Rect(0, 0, width, height);
 
-            _renderUtility.BeginPreview(new Rect(rect.x, rect.y, rect.width * 0.5f, rect.height * 0.5f), new GUIStyle());
+            _renderUtility.BeginPreview(rect, new GUIStyle());
 
-            if(DrawMeshPreview(tile.GetTilePreview(variation), tile.Material, tile.PreviewRotation)) {
-                // We don't use BeginStaticPreview due to it's limitation when it comes to transparent backgrounds
+            if (DrawMeshPreview(tile.GetTilePreview(variation), tile.Material, tile.PreviewRotation))
+            {
                 RenderTexture.active = _renderUtility.camera.targetTexture;
 
-                // Copy active rendertexture
                 output.ReadPixels(rect, 0, 0);
                 output.Apply();
-            
+
                 RenderTexture.active = null;
             }
 
