@@ -25,7 +25,7 @@ namespace TilemapCreator3D.EditorOnly {
         private ToolbarToggle[] _toggles;
         private Image _dragArea;
 
-        [MenuItem("Window/Tile Explorer")]
+        [MenuItem("Tools/Tile Explorer")]
         static void Init() {
             TileExplorer window = (TileExplorer) GetWindow(typeof(TileExplorer));
             window.titleContent = new GUIContent("Tile Explorer", EditorGUIUtility.Load("Packages/com.fkate.tilemap3d/Editor/Icons/TileExplorer.png") as Texture2D);
